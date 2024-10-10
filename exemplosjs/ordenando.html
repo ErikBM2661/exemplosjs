@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordenando com JavaScript</title>
+    <script src="ordenando.js"></script>
+</head>
+<body>
+    <h1>Ordenando Valores</h1>
+
+    <input type="number" id="valor" placeholder="Digite um número">
+    <button onclick="add()">Adicionar</button>
+
+    <select id="algoritmo">
+        <option value="bubble" selected>Bubble Sort</option>
+        <option value="selection">Selection Sort</option>
+        <option value="quick">Quick Sort</option>
+    </select>
+
+    <button onclick="ordenar()">Ordenar</button>
+    <button onclick="misturar()">Misturar</button>
+
+    <ul id="valores"></ul>
+
+    <script>
+        function add() {
+            const valorInput = document.getElementById('valor');
+            const valor = valorInput.value;
+
+            if (valor === '') return;
+
+            const lista = document.getElementById('valores');
+            const node = document.createElement('li');
+            const textNode = document.createTextNode(valor);
+            node.appendChild(textNode);
+            lista.appendChild(node);
+
+            valorInput.value = ''; 
+        }
+
+        function ordenar() {
+            const lista = document.getElementById('valores');
+            const algoritmo = document.getElementById('algoritmo').value;
+            let vetor = Array.from(lista.children).map(item => eval(item.innerHTML));
+
+            switch (algoritmo) {
+                case 'bubble':
+                    vetor = bubble_sort(vetor);
+                    break;
+                case 'selection':
+                    vetor = selection_sort(vetor);
+                    break;
+                case 'quick':
+                    vetor = quick_sort(vetor, 0, vetor.length - 1);
+                    break;
+            }
+
+            lista.innerHTML = vetor.map(v => `<li>${v}</li>`).reduce((html, li) => html + li, '');
+        }
+
+        function misturar() {
+            const lista = document.getElementById('valores');
+            let vetor = Array.from(lista.children).map(item => eval(item.innerHTML));
+            shuffle(vetor, vetor.length * 2);
+            lista.innerHTML = vetor.map(v => `<li>${v}</li>`).reduce((html, li) => html + li, '');
+        }
+    </script>
+</body>
+</html>
